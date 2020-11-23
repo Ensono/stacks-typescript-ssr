@@ -1,0 +1,60 @@
+parameters:
+  app_base_url: ""
+  app_path: ""
+  api_full_url: ""
+  testcafe_e2e_test: true
+  testcafe_working_directory: ""
+  test_results_storage: ""
+  test_results_container: ""
+  test_results_path: ""
+  test_results_blob_prefix: ""
+  lighthouse_audit: true
+  lighthouse_config_path: ""
+  lighthouse_config_filename: ""
+steps:
+  # Functional tests running on deployed webapp
+  - ${{ if eq(parameters.testcafe_e2e_test, true) }}:
+      - template: azDevOps/azure/templates/v2/steps/test-functional-testcafe.yml@templates
+        parameters:
+          env_vars:
+            APP_BASE_URL: "${{ parameters.app_base_url }}"
+            MENU_API_URL: "${{ parameters.api_full_url }}"
+            APP_BASE_PATH: "${{ parameters.app_path }}"
+            NODE_ENV: production
+          working_directory: ${{ parameters.testcafe_working_directory }}
+          testcafe_browser_list: "chrome:headless"
+
+  # Upload test results in pipeline, as artifacts, and html report to blob storage
+  - template: azDevOps/azure/templates/v2/steps/test-publish-test-reports-blob.yml@templates
+    parameters:
+      test_tool_name: testcafe
+      artifacts:
+        screenshots: "${{ parameters.testcafe_working_directory }}/screenshots"
+      working_directory: ${{ parameters.testcafe_working_directory }}
+      test_results_storage: ${{ parameters.test_results_storage }}
+      test_results_container: ${{ parameters.test_results_container }}
+      test_results_path: ${{ parameters.testcafe_working_directory }}
+      test_results_blob_prefix: ${{ parameters.test_results_blob_prefix }}
+
+  # Run lighthouse audit
+  - ${{ if eq(parameters.lighthouse_audit, true) }}:
+    - template: azDevOps/azure/templates/v2/steps/test-profiling-lighthouse.yml@templates
+      parameters:
+        working_directory: ${{ parameters.lighthouse_config_path }}
+        target_container: lhci
+        lighthouse_config_filename: ${{ parameters.lighthouse_config_filename }}
+        lighthouse_commands:
+          - 'collect'
+          - 'assert'
+        lighthouse_urls:
+          - "${{ parameters.app_base_url }}/${{ parameters.app_path }}"
+
+    # Upload test results in pipeline, as artifacts, and html report to blob storage
+    - template: azDevOps/azure/templates/v2/steps/test-publish-blob.yml@templates
+      parameters:
+        test_tool_name: lighthouse
+        working_directory: ${{ parameters.lighthouse_config_path }}
+        test_results_storage: ${{ parameters.test_results_storage }}
+        test_results_container: ${{ parameters.test_results_container }}
+        test_results_path: ${{ parameters.lighthouse_config_path }}/.lighthouseci
+        test_results_blob_prefix: "${{ parameters.test_results_blob_prefix }}"

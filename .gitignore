@@ -1,0 +1,32 @@
+.DS_Store
+.terraform
+dist/
+node_modules/
+.next/
+coverage/
+.vscode/
+test-report.xml
+
+# GENERATED OUTPUT
+*.d.ts
+!**/globals.d.ts
+*.js
+!*.config.js
+!**/config.js
+
+!**/environment-configuration/*.js
+.history/*.*
+
+# TESTCAFE
+**/screenshots/
+
+# CYPRESSS
+!**/*/cypress*/
+**/*/mochawesome_*.json
+**/*/cypress*/results
+**/*/cypress*/**/*.html
+!**/*/cypress*/config/*.js
+
+# Lighthouse results
+**/*/lighthouse-ci/results
+**/.vscode/launch.local.json

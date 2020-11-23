@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="38" failures="0" time="36.094">
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2020-08-26T12:11:54" time="4.736" tests="1">
+    <testcase classname=" renders form snapshot" name=" renders form snapshot" time="0.468">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2020-08-26T12:11:59" time="3.251" tests="3">
+    <testcase classname=" With React Testing Library page renders tag type &lt;div&gt; with text" name=" With React Testing Library page renders tag type &lt;div&gt; with text" time="0.152">
+    </testcase>
+    <testcase classname=" With React Testing Library Snapshot renders page" name=" With React Testing Library Snapshot renders page" time="0.083">
+    </testcase>
+    <testcase classname=" With React Testing Library page rerenders with hydrate" name=" With React Testing Library page rerenders with hydrate" time="0.069">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2020-08-26T12:12:02" time="1.17" tests="2">
+    <testcase classname=" renders Header snapshot" name=" renders Header snapshot" time="0.087">
+    </testcase>
+    <testcase classname=" renders no button on create page" name=" renders no button on create page" time="0.033">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2020-08-26T12:12:03" time="1.071" tests="1">
+    <testcase classname=" renders ApiPane snapshot" name=" renders ApiPane snapshot" time="0.105">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2020-08-26T12:12:05" time="1.733" tests="2">
+    <testcase classname=" passes accessibility checks" name=" passes accessibility checks" time="0.331">
+    </testcase>
+    <testcase classname=" passes accessibility checks" name=" passes accessibility checks" time="0.296">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2020-08-26T12:12:06" time="1.509" tests="1">
+    <testcase classname=" renders HeroPost snapshot" name=" renders HeroPost snapshot" time="0.084">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2020-08-26T12:12:08" time="2.077" tests="1">
+    <testcase classname=" passes accessibility checks" name=" passes accessibility checks" time="1.126">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2020-08-26T12:12:10" time="1.837" tests="1">
+    <testcase classname=" passes accessibility checks" name=" passes accessibility checks" time="0.812">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2020-08-26T12:12:12" time="1.117" tests="1">
+    <testcase classname=" renders ApiPane snapshot" name=" renders ApiPane snapshot" time="0.028">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2020-08-26T12:12:13" time="1.247" tests="1">
+    <testcase classname=" passes accessibility checks" name=" passes accessibility checks" time="0.416">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2020-08-26T12:12:14" time="1.161" tests="1">
+    <testcase classname=" passes accessibility checks" name=" passes accessibility checks" time="0.237">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2020-08-26T12:12:16" time="1.057" tests="1">
+    <testcase classname=" renders BlogLanding snapshot" name=" renders BlogLanding snapshot" time="0.031">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2020-08-26T12:12:17" time="1.209" tests="1">
+    <testcase classname=" passes accessibility checks" name=" passes accessibility checks" time="0.244">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2020-08-26T12:12:18" time="1.033" tests="1">
+    <testcase classname=" renders ApiPane snapshot" name=" renders ApiPane snapshot" time="0.025">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2020-08-26T12:12:19" time="1.051" tests="1">
+    <testcase classname=" passes accessibility checks" name=" passes accessibility checks" time="0.106">
+    </testcase>
+  </testsuite>
+  <testsuite name="The &lt;RestaurantListItem/&gt;" errors="0" failures="0" skipped="0" timestamp="2020-08-26T12:12:20" time="0.963" tests="1">
+    <testcase classname="The &lt;RestaurantListItem/&gt; should match snapshot" name="The &lt;RestaurantListItem/&gt; should match snapshot" time="0.055">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2020-08-26T12:12:21" time="1.014" tests="1">
+    <testcase classname=" renders LocaleSwitcher snapshot" name=" renders LocaleSwitcher snapshot" time="0.025">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2020-08-26T12:12:22" time="0.997" tests="2">
+    <testcase classname=" renders ApiPane snapshot" name=" renders ApiPane snapshot" time="0.041">
+    </testcase>
+    <testcase classname=" fires api call on mount" name=" fires api call on mount" time="0.055">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2020-08-26T12:12:23" time="1.017" tests="2">
+    <testcase classname=" renders RestaurantListComponent snapshot without restaurants" name=" renders RestaurantListComponent snapshot without restaurants" time="0.026">
+    </testcase>
+    <testcase classname=" renders RestaurantListComponent snapshot with restaurants" name=" renders RestaurantListComponent snapshot with restaurants" time="0.052">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2020-08-26T12:12:24" time="0.731" tests="1">
+    <testcase classname=" passes accessibility checks" name=" passes accessibility checks" time="0.048">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2020-08-26T12:12:25" time="0.681" tests="9">
+    <testcase classname=" the reducer should return the current state" name=" the reducer should return the current state" time="0.002">
+    </testcase>
+    <testcase classname=" Trigger action should reset the state" name=" Trigger action should reset the state" time="0.001">
+    </testcase>
+    <testcase classname=" REQUEST action should set the right state" name=" REQUEST action should set the right state" time="0">
+    </testcase>
+    <testcase classname=" SUCCESS action should set the right state" name=" SUCCESS action should set the right state" time="0.001">
+    </testcase>
+    <testcase classname=" sagas should dispatch the &quot;success&quot; action on successful response" name=" sagas should dispatch the &quot;success&quot; action on successful response" time="0.005">
+    </testcase>
+    <testcase classname=" sagas should dispatch the &quot;failure&quot; action" name=" sagas should dispatch the &quot;failure&quot; action" time="0.002">
+    </testcase>
+    <testcase classname=" isLoading should select the loading state" name=" isLoading should select the loading state" time="0">
+    </testcase>
+    <testcase classname=" getError should return the error" name=" getError should return the error" time="0.001">
+    </testcase>
+    <testcase classname=" the exported sagas array should contain an array of the watch methods " name=" the exported sagas array should contain an array of the watch methods " time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2020-08-26T12:12:26" time="0.639" tests="1">
+    <testcase classname=" renders ApiPane snapshot" name=" renders ApiPane snapshot" time="0.022">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2020-08-26T12:12:26" time="0.644" tests="2">
+    <testcase classname=" should call the getMenus API" name=" should call the getMenus API" time="0.002">
+    </testcase>
+    <testcase classname=" should call the getMenus API" name=" should call the getMenus API" time="0.001">
+    </testcase>
+  </testsuite>
+</testsuites>
