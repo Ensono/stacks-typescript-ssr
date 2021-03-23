@@ -84,7 +84,7 @@
     "@types/applicationinsights": "^0.20.0",
     "@types/cypress-axe": "^0.8.0",
     "@types/express": "^4.17.2",
-    "@types/express-serve-static-core": "^4.17.5",
+    "@types/express-serve-static-core": "^4.17.19",
     "@types/express-session": "^1.17.0",
     "@types/helmet": "^0.0.45",
     "@types/jest": "^26.0.7",
