@@ -101,7 +101,6 @@ variables:
   testcafe_e2e_test: true
   testcafe_working_directory: "${{ variables.self_repo_dir }}/test/testcafe"
   # Resource Test Results Blob Storage Container
-  test_results_storage: "amidostacksuksdev"
   test_results_container: "testresults"
   # Lighthouse Audit
   lighthouse_audit: true
@@ -263,6 +262,10 @@ stages:
                       TF_VAR_dns_zone_name: $(base_domain_nonprod),
                       TF_VAR_dns_zone_resource_group: "amido-stacks-nonprod-eun-core",
                       TF_VAR_internal_dns_zone_name: $(base_domain_internal_nonprod),
+                      TF_VAR_account_replication_type: "LRS",
+                      TF_VAR_account_kind: "StorageV2",
+                      TF_VAR_account_tier: "Standard",
+                      TF_VAR_storage_container_name: "$(test_results_container)",
                       TF_VAR_create_cache: true,
                       TF_VAR_cache_capacity: "2",
                       TF_VAR_cache_family: "C",
@@ -295,6 +298,8 @@ stages:
             value: $[ dependencies.AppInfraDev.outputs['AppInfraDev.tfoutputs.redis_cache_key'] ]
           - name: app_insights_instrumentation_key
             value: $[ dependencies.AppInfraDev.outputs['AppInfraDev.tfoutputs.app_insights_instrumentation_key'] ]
+          - name: storage_account_name
+            value: $[ dependencies.AppInfraDev.outputs['AppInfraDev.tfoutputs.storage_account_name'] ]
           - name: namespace
             value: $(Environment.Name)-$(component)
           - name: dns_pointer
@@ -376,7 +381,7 @@ stages:
                     api_full_url: "${{ variables.api_full_url }}"
                     testcafe_e2e_test: true
                     testcafe_working_directory: "$(testcafe_working_directory)"
-                    test_results_storage: $(test_results_storage)
+                    test_results_storage: $(storage_account_name)
                     test_results_container: $(test_results_container)
                     test_results_path: $(testcafe_working_directory)
                     test_results_blob_prefix: "$(Environment.Name)-$(Build.BuildNumber)"
@@ -454,6 +459,10 @@ stages:
                       TF_VAR_dns_zone_name: $(base_domain_prod),
                       TF_VAR_dns_zone_resource_group: "amido-stacks-prod-eun-core",
                       TF_VAR_internal_dns_zone_name: $(base_domain_internal_prod),
+                      TF_VAR_account_replication_type: "LRS",
+                      TF_VAR_account_kind: "StorageV2",
+                      TF_VAR_account_tier: "Standard",
+                      TF_VAR_storage_container_name: "$(test_results_container)",
                       TF_VAR_create_cache: true,
                       TF_VAR_cache_capacity: "2",
                       TF_VAR_cache_family: "C",
@@ -523,6 +532,8 @@ stages:
             value: $[ dependencies.AppInfraProd.outputs['AppInfraProd.tfoutputs.redis_cache_key'] ]
           - name: app_insights_instrumentation_key
             value: $[ dependencies.AppInfraProd.outputs['AppInfraProd.tfoutputs.app_insights_instrumentation_key'] ]
+          - name: storage_account_name
+            value: $[ dependencies.AppInfraDev.outputs['AppInfraProd.tfoutputs.storage_account_name'] ]
           - name: namespace
             value: $(Environment.Name)-$(component)
           - name: dns_pointer
@@ -604,7 +615,7 @@ stages:
                     api_full_url: "${{ variables.api_full_url }}"
                     testcafe_e2e_test: true
                     testcafe_working_directory: "$(testcafe_working_directory)"
-                    test_results_storage: $(test_results_storage)
+                    test_results_storage: $(storage_account_name)
                     test_results_container: $(test_results_container)
                     test_results_path: $(testcafe_working_directory)
                     test_results_blob_prefix: "$(Environment.Name)-$(Build.BuildNumber)"
