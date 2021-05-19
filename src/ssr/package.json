@@ -130,6 +130,6 @@
   },
   "license": "MIT",
   "repository": {
-    "url": "git://github.com/amido/stacks-webapp-template"
+    "url": "git://github.com/amido/stacks-typescript-ssr"
   }
 }
