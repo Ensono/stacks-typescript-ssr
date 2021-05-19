@@ -19,6 +19,11 @@ output "cosmosdb_primary_master_key" {
   value       = module.app.cosmosdb_primary_master_key
 }
 
+output "storage_account_name" {
+  description = "Storage Account name used for Testcafe test uploads"
+  value       = azurerm_storage_account.default.name
+}
+
 output "redis_cache_key" {
   description = "Primary Key for accessing the RedisCache, should only be used in applications running outside of AzureCloud"
   sensitive   = true

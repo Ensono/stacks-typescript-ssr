@@ -57,8 +57,8 @@ variable "resource_group_location" {
 }
 
 variable "app_gateway_frontend_ip_name" {
-  description = ""
   type        = string
+  description = ""
 }
 
 variable "dns_record" {
@@ -87,8 +87,8 @@ variable "internal_dns_zone_name" {
 # CONDITIONAL SETTINGS
 ##########################
 variable "create_cosmosdb" {
-  description = "Whether to create a cosmosdb or not for this application"
   type        = bool
+  description = "Whether to create a cosmosdb or not for this application"
 }
 
 variable "create_cache" {
@@ -102,6 +102,25 @@ variable "create_dns_record" {
 
 variable "create_cdn_endpoint" {
   type = bool
+}
+
+####################
+# Storage Account
+####################
+variable "account_replication_type" {
+  type = string
+}
+
+variable "account_kind" {
+  type = string
+}
+
+variable "account_tier" {
+  type = string
+}
+
+variable "storage_container_name" {
+  type = string
 }
 
 ####################
