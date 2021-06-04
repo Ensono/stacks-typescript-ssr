@@ -30,3 +30,4 @@ test-report.xml
 # Lighthouse results
 **/*/lighthouse-ci/results
 **/.vscode/launch.local.json
+/.idea/
