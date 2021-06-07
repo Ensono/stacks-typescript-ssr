@@ -116,7 +116,7 @@
     "jest-junit": "^12.0.0",
     "jest-sonar-reporter": "^2.0.0",
     "nodemon": "^2.0.2",
-    "prettier": "^2.0.2",
+    "prettier": "^2.3.1",
     "redux-mock-store": "^1.5.4",
     "snapshot-diff": "^0.7.0",
     "start-server-and-test": "^1.10.8",
