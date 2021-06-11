@@ -194,15 +194,19 @@ stages:
                 TERM: xterm
 
   - stage: Dev
+    dependsOn: Build
+    condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/master'))
     variables:
       - group: amido-stacks-infra-credentials-nonprod
       - group: amido-stacks-webapp
+      - name: Environment.ShortName
+        value: dev
     jobs:
       - deployment: AppInfraDev
         pool:
           vmImage: $(pool_vm_image)
         container: terraform_custom
-        environment: dev
+        environment: ${{ variables.domain}}-dev
         strategy:
           runOnce:
             deploy:
@@ -233,8 +237,8 @@ stages:
                     azure_client_secret: $(azure_client_secret)
                     azure_tenant_id: $(azure_tenant_id)
                     azure_subscription_id: $(azure_subscription_id)
-                    # for branch based builds this can be $(Build.SourceBranchName)
-                    terraform_state_workspace: $(Environment.Name)-$(component)
+                    # TODO: Why does this have component on the end?
+                    terraform_state_workspace: $(Environment.ShortName)-$(component)
                     # Global Config
                     company: $(company)
                     project: $(project)
@@ -256,9 +260,10 @@ stages:
                       TF_VAR_name_project: $(project),
                       TF_VAR_name_domain: $(domain),
                       TF_VAR_name_component: $(component),
-                      TF_VAR_stage: $(Environment.Name),
+                      TF_VAR_stage: $(Environment.ShortName),
                       TF_VAR_create_cosmosdb: false,
-                      TF_VAR_dns_record: $(Environment.Name)-$(component),
+                      # TODO: Should this be domain like everything else?
+                      TF_VAR_dns_record: $(Environment.ShortName)-$(variables.component),
                       TF_VAR_dns_zone_name: $(base_domain_nonprod),
                       TF_VAR_dns_zone_resource_group: "amido-stacks-nonprod-eun-core",
                       TF_VAR_internal_dns_zone_name: $(base_domain_internal_nonprod),
@@ -300,15 +305,16 @@ stages:
             value: $[ dependencies.AppInfraDev.outputs['AppInfraDev.tfoutputs.app_insights_instrumentation_key'] ]
           - name: storage_account_name
             value: $[ dependencies.AppInfraDev.outputs['AppInfraDev.tfoutputs.storage_account_name'] ]
+          # TODO: Should this be domain like everything else?
           - name: namespace
-            value: $(Environment.Name)-$(component)
+            value: $(Environment.ShortName)-$(component)
           - name: dns_pointer
-            value: "$(Environment.Name)-$(component).$(base_domain_nonprod)"
+            value: "$(Environment.ShortName)-$(component).$(base_domain_nonprod)"
           - name: api_full_url
-            value: "https://$(Environment.Name)-netcore-api.$(base_domain_nonprod)/api/menu"
+            value: "https://$(Environment.ShortName)-netcore-api.$(base_domain_nonprod)/api/menu"
         pool:
           vmImage: $(pool_vm_image)
-        environment: dev
+        environment: ${{ variables.domain }}-dev
         strategy:
           runOnce:
             deploy:
@@ -330,7 +336,7 @@ stages:
                       component: $(component),
                       resource_def_name: $(component),
                       version: $(docker_image_tag),
-                      environment: $(Environment.Name)
+                      environment: $(Environment.ShortName)
                     }
                     template_input: [
                       {
@@ -384,22 +390,25 @@ stages:
                     test_results_storage: $(storage_account_name)
                     test_results_container: $(test_results_container)
                     test_results_path: $(testcafe_working_directory)
-                    test_results_blob_prefix: "$(Environment.Name)-$(Build.BuildNumber)"
+                    test_results_blob_prefix: "$(Environment.ShortName)-$(Build.BuildNumber)"
                     lighthouse_audit: $(lighthouse_audit)
                     lighthouse_config_path: $(lighthouse_config_path)
                     lighthouse_config_filename: $(lighthouse_config_filename)
 
   - stage: Prod
+    dependsOn: Build
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
     variables:
       - group: amido-stacks-infra-credentials-prod
       - group: amido-stacks-webapp
+      - name: Environment.ShortName
+        value: prod
     jobs:
       - deployment: AppInfraProd
         pool:
           vmImage: $(pool_vm_image)
         container: terraform_custom
-        environment: prod
+        environment: ${{ variables.domain }}-prod
         strategy:
           runOnce:
             deploy:
@@ -430,8 +439,8 @@ stages:
                     azure_client_secret: $(prod_azure_client_secret)
                     azure_tenant_id: $(prod_azure_tenant_id)
                     azure_subscription_id: $(prod_azure_subscription_id)
-                    # for branch based builds this can be $(Build.SourceBranchName)
-                    terraform_state_workspace: $(Environment.Name)-$(component)
+                    # TODO: Why does this have component on the end?
+                    terraform_state_workspace: $(Environment.ShortName)-$(component)
                     # Global Config
                     company: $(company)
                     project: $(project)
@@ -453,9 +462,10 @@ stages:
                       TF_VAR_name_project: $(project),
                       TF_VAR_name_domain: $(domain),
                       TF_VAR_name_component: $(component),
-                      TF_VAR_stage: $(Environment.Name),
+                      TF_VAR_stage: $(Environment.ShortName),
                       TF_VAR_create_cosmosdb: false,
-                      TF_VAR_dns_record: $(Environment.Name)-$(component),
+                      # TODO: Should this be domain like everything else?
+                      TF_VAR_dns_record: $(Environment.ShortName)-$(component),
                       TF_VAR_dns_zone_name: $(base_domain_prod),
                       TF_VAR_dns_zone_resource_group: "amido-stacks-prod-eun-core",
                       TF_VAR_internal_dns_zone_name: $(base_domain_internal_prod),
@@ -491,7 +501,7 @@ stages:
         container: k8s_deploy
         pool:
           vmImage: $(pool_vm_image)
-        environment: prod
+        environment: ${{ variables.domain }}-prod
         variables:
           - group: amido-stacks-infra-credentials-nonprod
           - group: amido-stacks-infra-credentials-prod
@@ -534,15 +544,16 @@ stages:
             value: $[ dependencies.AppInfraProd.outputs['AppInfraProd.tfoutputs.app_insights_instrumentation_key'] ]
           - name: storage_account_name
             value: $[ dependencies.AppInfraDev.outputs['AppInfraProd.tfoutputs.storage_account_name'] ]
+          # TODO: Should this be domain like everything else?
           - name: namespace
-            value: $(Environment.Name)-$(component)
+            value: $(Environment.ShortName)-$(component)
           - name: dns_pointer
-            value: "$(Environment.Name)-$(component).$(base_domain_prod)"
+            value: "$(Environment.ShortName)-$(component).$(base_domain_prod)"
           - name: api_full_url
-            value: "https://$(Environment.Name)-netcore-api.$(base_domain_prod)/api/menu"
+            value: "https://$(Environment.ShortName)-netcore-api.$(base_domain_prod)/api/menu"
         pool:
           vmImage: $(pool_vm_image)
-        environment: prod
+        environment: ${{ variables.domain }}-prod
         strategy:
           runOnce:
             deploy:
@@ -564,7 +575,7 @@ stages:
                       component: $(component),
                       resource_def_name: $(component),
                       version: $(docker_image_tag),
-                      environment: $(Environment.Name)
+                      environment: $(Environment.ShortName)
                     }
                     template_input: [
                       {
@@ -618,7 +629,7 @@ stages:
                     test_results_storage: $(storage_account_name)
                     test_results_container: $(test_results_container)
                     test_results_path: $(testcafe_working_directory)
-                    test_results_blob_prefix: "$(Environment.Name)-$(Build.BuildNumber)"
+                    test_results_blob_prefix: "$(Environment.ShortName)-$(Build.BuildNumber)"
                     lighthouse_audit: $(lighthouse_audit)
                     lighthouse_config_path: $(lighthouse_config_path)
                     lighthouse_config_filename: $(lighthouse_config_filename)
