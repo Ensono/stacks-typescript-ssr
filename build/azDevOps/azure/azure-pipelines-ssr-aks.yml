@@ -34,9 +34,9 @@ resources:
     - container: sonar_scanner
       image: amidostacks/ci-sonarscanner:0.0.2
     - container: k8s_deploy
-      image: amidostacks/ci-k8s:0.0.11
+      image: amidostacks/ci-k8s:0.0.12
     - container: terraform_custom
-      image: amidostacks/ci-tf:0.0.4
+      image: amidostacks/ci-tf:0.0.8
     - container: cypress
       image: cypress/base:12.16.2
     - container: lhci
@@ -206,7 +206,7 @@ stages:
         pool:
           vmImage: $(pool_vm_image)
         container: terraform_custom
-        environment: ${{ variables.domain}}-dev
+        environment: ${{ variables.domain }}-dev
         strategy:
           runOnce:
             deploy:
@@ -268,7 +268,7 @@ stages:
                       TF_VAR_dns_zone_resource_group: "amido-stacks-nonprod-eun-core",
                       TF_VAR_internal_dns_zone_name: $(base_domain_internal_nonprod),
                       TF_VAR_account_replication_type: "LRS",
-                      TF_VAR_account_kind: "StorageV2",
+                      TF_VAR_account_kind : "StorageV2",
                       TF_VAR_account_tier: "Standard",
                       TF_VAR_storage_container_name: "$(test_results_container)",
                       TF_VAR_create_cache: true,
