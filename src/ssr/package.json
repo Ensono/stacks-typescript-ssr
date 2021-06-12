@@ -72,7 +72,7 @@
     "redux-saga-routines": "^3.2.2",
     "swr": "^0.3.0",
     "uid-safe": "^2.1.5",
-    "winston": "^3.2.1"
+    "winston": "^3.3.3"
   },
   "devDependencies": {
     "@amidostacks/eslint-config": "^0.30.0",
