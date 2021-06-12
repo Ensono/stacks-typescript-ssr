@@ -25,7 +25,7 @@ resources:
     - repository: templates
       type: github
       name: amido/stacks-pipeline-templates
-      ref: refs/tags/v1.4.24
+      ref: refs/tags/v1.4.26
       # EXCHANGE THIS FOR YOUR OWN ENDPOINT CONNECTION TO GITHUB
       # REPOSITORY IS PUBLIC
       endpoint: amidostacks
@@ -385,13 +385,13 @@ stages:
                     app_base_url: "https://${{ variables.dns_pointer }}"
                     app_path: "/web/stacks"
                     api_full_url: "${{ variables.api_full_url }}"
-                    testcafe_e2e_test: true
+                    testcafe_e2e_test: ${{ variables.testcafe_e2e_test }}
                     testcafe_working_directory: "$(testcafe_working_directory)"
                     test_results_storage: $(storage_account_name)
                     test_results_container: $(test_results_container)
                     test_results_path: $(testcafe_working_directory)
                     test_results_blob_prefix: "$(Environment.ShortName)-$(Build.BuildNumber)"
-                    lighthouse_audit: $(lighthouse_audit)
+                    lighthouse_audit: ${{ variables.lighthouse_audit }}
                     lighthouse_config_path: $(lighthouse_config_path)
                     lighthouse_config_filename: $(lighthouse_config_filename)
 
@@ -624,12 +624,12 @@ stages:
                     app_base_url: "https://${{ variables.dns_pointer }}"
                     app_path: "/web/stacks"
                     api_full_url: "${{ variables.api_full_url }}"
-                    testcafe_e2e_test: true
+                    testcafe_e2e_test: ${{ variables.testcafe_e2e_test }}
                     testcafe_working_directory: "$(testcafe_working_directory)"
                     test_results_storage: $(storage_account_name)
                     test_results_container: $(test_results_container)
                     test_results_path: $(testcafe_working_directory)
                     test_results_blob_prefix: "$(Environment.ShortName)-$(Build.BuildNumber)"
-                    lighthouse_audit: $(lighthouse_audit)
+                    lighthouse_audit: ${{ variables.lighthouse_audit }}
                     lighthouse_config_path: $(lighthouse_config_path)
                     lighthouse_config_filename: $(lighthouse_config_filename)
