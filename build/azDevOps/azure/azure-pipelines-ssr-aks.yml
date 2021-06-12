@@ -263,7 +263,7 @@ stages:
                       TF_VAR_stage: $(Environment.ShortName),
                       TF_VAR_create_cosmosdb: false,
                       # TODO: Should this be domain like everything else?
-                      TF_VAR_dns_record: $(Environment.ShortName)-$(variables.component),
+                      TF_VAR_dns_record: $(Environment.ShortName)-$(component),
                       TF_VAR_dns_zone_name: $(base_domain_nonprod),
                       TF_VAR_dns_zone_resource_group: "amido-stacks-nonprod-eun-core",
                       TF_VAR_internal_dns_zone_name: $(base_domain_internal_nonprod),
