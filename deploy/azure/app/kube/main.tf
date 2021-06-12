@@ -7,7 +7,7 @@ data "azurerm_client_config" "current" {}
 
 # Naming convention
 module "default_label" {
-  source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=0.16.0"
+  source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=0.24.1"
   namespace  = "${var.name_company}-${var.name_project}"
   stage      = var.stage
   name       = "${lookup(var.location_name_map, var.resource_group_location, "uksouth")}-${var.name_component}"
@@ -17,7 +17,7 @@ module "default_label" {
 }
 
 module "app" {
-  source                  = "git::https://github.com/amido/stacks-terraform//azurerm/modules/azurerm-server-side-app?ref=v1.3.5"
+  source                  = "git::https://github.com/amido/stacks-terraform//azurerm/modules/azurerm-server-side-app?ref=v1.4.1"
   create_cosmosdb         = var.create_cosmosdb
   resource_namer          = module.default_label.id
   resource_tags           = module.default_label.tags
