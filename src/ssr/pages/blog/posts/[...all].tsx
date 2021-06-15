@@ -1,6 +1,6 @@
 import NextError from "next/error"
 import {useRouter} from "next/router"
-import {getAllPostsWithSlug, getPost} from "../../../lib/contentful-api"
+import {getAllPostsWithSlug, getPost} from "../../../lib/cms-middleware"
 import React from "react"
 import PostHeader from "components/PostHeader"
 import PostBody from "components/PostBody"
