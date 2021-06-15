@@ -63,7 +63,7 @@ export default app
             }
         }
 
-        // server.use(helmetGuard)
+        server.use(helmetGuard)
         server.use(removeXPoweredByHeader)
         server.use(setXSSProtectionHeader)
         server.use(httpLogger)
