@@ -146,7 +146,7 @@ stages:
                 BUILD_NUMBER: $(docker_image_tag),
                 SONAR_SCANNER_OPTS: ""
               }
-              #Linting and formatting validation
+              # Linting and formatting validation
               lint_formatting: false
               shared_eslint_config: "@amidostacks/eslint-config@latest"
               # Should be hardcoded in your sonar-project.properties file
@@ -165,8 +165,6 @@ stages:
                 NODE_ENV: dev
                 # avoid warnings about terminal
                 TERM: xterm
-          # you can define additional steps here
-      # you can define additional jobs here
 
   - stage: dev
     variables:
@@ -189,7 +187,7 @@ stages:
               # changing this would require changing the downstream consumers of these outputs
               #
               terraform_output_artefact: 'tfoutputs'
-              #Auth config
+              # Auth config
               terraform_auth_properties: {
                 GOOGLE_CREDENTIALS: $(GOOGLE_CREDENTIALS)
               }
@@ -241,7 +239,8 @@ stages:
                       version: $(docker_image_tag),
                       environment: dev
                     }
-                    enable_debug: "yes" # Remove or comment this line for production or to hide output from templating process
+                    # Remove or comment this line for production or to hide output from templating process
+                    enable_debug: "yes"
                     template_input: [
                       {
                         base: $(Agent.BuildDirectory)/s/$(self_repo)/deploy/k8s/app/base_gke-app-deploy.yml,
@@ -272,7 +271,7 @@ stages:
                     # ONLY USED FOR kubectl apply
                     cluster_name: amido-stacks-nonprod-core
                     deployment_defs:
-                      - { name: app_deploy, file: $(Agent.BuildDirectory)/s/$(self_repo)/deploy/k8s/app/app-deploy.yml, context: ""}
+                      - {name: app_deploy, file: $(Agent.BuildDirectory)/s/$(self_repo)/deploy/k8s/app/app-deploy.yml, context: ""}
                     scripts_dir: $(Agent.BuildDirectory)/s/stacks-pipeline-templates/azDevOps/azure/templates/v2/scripts
                     appinsights_enabled: false
       - job:

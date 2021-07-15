@@ -34,16 +34,16 @@ metadata:
   namespace: ${namespace}
 spec:
   rules:
-  - host: ${dns_pointer}
-    http:
-      paths:
-      - backend:
-          serviceName: ${resource_def_name}
-          servicePort: 80
-        path: ${k8s_app_path:=''}(/|$)(.*)
+    - host: ${dns_pointer}
+      http:
+        paths:
+          - backend:
+              serviceName: ${resource_def_name}
+              servicePort: 80
+            path: ${k8s_app_path:=''}(/|$)(.*)
   tls:
-  - hosts:
-    - ${tls_domain}
+    - hosts:
+        - ${tls_domain}
 
 ---
 
@@ -69,9 +69,9 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-  - port: 80
-    protocol: TCP
-    targetPort: http
+    - port: 80
+      protocol: TCP
+      targetPort: http
   selector:
     app.kubernetes.io/component: ${component}
     app.kubernetes.io/name: ${resource_def_name}
@@ -224,8 +224,8 @@ spec:
               port: 3000
               scheme: HTTP
               httpHeaders:
-              - name: stacks-k8s-probe
-                value: live
+                - name: stacks-k8s-probe
+                  value: live
             initialDelaySeconds: 45
             periodSeconds: 30
             successThreshold: 1
