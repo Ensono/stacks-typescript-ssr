@@ -15,17 +15,17 @@ pr:
 trigger:
   branches:
     include:
-    - 'master'
+      - 'master'
   paths:
     include:
-    - '*'
+      - '*'
 
 resources:
   repositories:
     - repository: templates
       type: github
       name: amido/stacks-pipeline-templates
-      ref: refs/tags/v2.0.0
+      ref: refs/tags/v2.0.1
       # EXCHANGE THIS FOR YOUR OWN ENDPOINT CONNECTION TO GITHUB
       # REPOSITORY IS PUBLIC
       endpoint: amidostacks
@@ -173,7 +173,7 @@ stages:
                 BUILD_NUMBER: $(docker_image_tag),
                 SONAR_SCANNER_OPTS: ""
               }
-              #Linting and formatting validation
+              # Linting and formatting validation
               lint_formatting: false
               shared_eslint_config: "@amidostacks/eslint-config@latest"
               # Should be hardcoded in your sonar-project.properties file
@@ -244,7 +244,7 @@ stages:
                     project: $(project)
                     environment: ''
                     azure_cli_providers: [
-                      { name: MSIPreview, namespace: Microsoft.ContainerService }
+                      {name: MSIPreview, namespace: Microsoft.ContainerService}
                     ]
                     # Azure config
                     tags: ''
@@ -268,7 +268,7 @@ stages:
                       TF_VAR_dns_zone_resource_group: "amido-stacks-nonprod-eun-core",
                       TF_VAR_internal_dns_zone_name: $(base_domain_internal_nonprod),
                       TF_VAR_account_replication_type: "LRS",
-                      TF_VAR_account_kind : "StorageV2",
+                      TF_VAR_account_kind: "StorageV2",
                       TF_VAR_account_tier: "Standard",
                       TF_VAR_storage_container_name: "$(test_results_container)",
                       TF_VAR_create_cache: true,
@@ -446,7 +446,7 @@ stages:
                     project: $(project)
                     environment: ''
                     azure_cli_providers: [
-                      { name: MSIPreview, namespace: Microsoft.ContainerService }
+                      {name: MSIPreview, namespace: Microsoft.ContainerService}
                     ]
                     # Azure config
                     tags: ''

@@ -38,23 +38,23 @@ steps:
 
   # Run lighthouse audit
   - ${{ if eq(parameters.lighthouse_audit, true) }}:
-    - template: azDevOps/azure/templates/v2/steps/test-profiling-lighthouse.yml@templates
-      parameters:
-        working_directory: ${{ parameters.lighthouse_config_path }}
-        target_container: lhci
-        lighthouse_config_filename: ${{ parameters.lighthouse_config_filename }}
-        lighthouse_commands:
-          - 'collect'
-          - 'assert'
-        lighthouse_urls:
-          - "${{ parameters.app_base_url }}/${{ parameters.app_path }}"
+      - template: azDevOps/azure/templates/v2/steps/test-profiling-lighthouse.yml@templates
+        parameters:
+          working_directory: ${{ parameters.lighthouse_config_path }}
+          target_container: lhci
+          lighthouse_config_filename: ${{ parameters.lighthouse_config_filename }}
+          lighthouse_commands:
+            - 'collect'
+            - 'assert'
+          lighthouse_urls:
+            - "${{ parameters.app_base_url }}/${{ parameters.app_path }}"
 
-    # Upload test results in pipeline, as artifacts, and html report to blob storage
-    - template: azDevOps/azure/templates/v2/steps/test-publish-blob.yml@templates
-      parameters:
-        test_tool_name: lighthouse
-        working_directory: ${{ parameters.lighthouse_config_path }}
-        test_results_storage: ${{ parameters.test_results_storage }}
-        test_results_container: ${{ parameters.test_results_container }}
-        test_results_path: ${{ parameters.lighthouse_config_path }}/.lighthouseci
-        test_results_blob_prefix: "${{ parameters.test_results_blob_prefix }}"
+      # Upload test results in pipeline, as artifacts, and html report to blob storage
+      - template: azDevOps/azure/templates/v2/steps/test-publish-blob.yml@templates
+        parameters:
+          test_tool_name: lighthouse
+          working_directory: ${{ parameters.lighthouse_config_path }}
+          test_results_storage: ${{ parameters.test_results_storage }}
+          test_results_container: ${{ parameters.test_results_container }}
+          test_results_path: ${{ parameters.lighthouse_config_path }}/.lighthouseci
+          test_results_blob_prefix: "${{ parameters.test_results_blob_prefix }}"

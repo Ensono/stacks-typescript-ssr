@@ -137,7 +137,7 @@ steps:
           docker_imagetag: ${{ parameters.docker_imagetag }}
           docker_containerregistryname: ${{ parameters.docker_containerregistryname }}
 
-    # Build Docker Image, Scan and Push to Repository
+  # Build Docker Image, Scan and Push to Repository
   - ${{ if eq(parameters.docker_build_generic, true) }}:
       - template: azDevOps/azure/templates/v2/steps/build-container-image-generic.yml@templates
         parameters:
