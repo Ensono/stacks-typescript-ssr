@@ -70,7 +70,7 @@ variables:
   # - we suggest you create a runtime variable that is dynamically set based on a branch currently running
   # **`terraform_state_workspace: `**
   # avoid running anything past dev that is not on master
-  tf_state_key: "stacks-webapp"
+  tf_state_key: "stacks-webapp-ssr"
   # Versioning
   version_major: 0
   version_minor: 0
