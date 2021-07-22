@@ -61,8 +61,8 @@ variables:
   self_pipeline_repo: "$(Agent.BuildDirectory)/s/stacks-pipeline-templates"
   self_pipeline_scripts_dir: "$(self_pipeline_repo)/scripts"
   # TF STATE CONFIG
-  tf_state_rg: "amido-stacks-rg-uks"
-  tf_state_storage: "amidostackstfstategbl"
+  tf_state_rg: "Stacks-Ancillary-Resources"
+  tf_state_storage: "amidostackstfstate"
   tf_state_container: "tfstate"
   # Stacks operates Terraform states based on workspaces **IT IS VERY IMPORTANT** that you ensure a unique name for each application definition
   # Furthermore **IT IS VERY IMPORTANT** that you change the name of a workspace for each deployment stage
@@ -80,12 +80,15 @@ variables:
   docker_dockerfile_path: "src/"
   docker_image_name: $(component)
   docker_image_tag: "$(version_major).$(version_minor).$(version_revision)-$(build.sourcebranchname)"
-  docker_container_registry_name_nonprod: amidostacksnonprodeuncore
+  docker_container_registry_name_nonprod: amidostacksnonprodeuwcore
   k8s_docker_registry_nonprod: $(docker_container_registry_name_nonprod).azurecr.io
-  docker_container_registry_name_prod: amidostacksprodeuncore
+  docker_container_registry_name_prod: amidostacksprodeuwcore
   k8s_docker_registry_prod: $(docker_container_registry_name_prod).azurecr.io
+  # Environment
+  # Set the name of the resource group that has the DNS zones to be updated
+  dns_zone_resource_group: "Stacks-Ancillary-Resources"
   # AKS/AZURE
-  region: "northeurope"
+  region: "westeurope"
   base_domain_nonprod: nonprod.amidostacks.com
   base_domain_internal_nonprod: nonprod.amidostacks.internal
   base_domain_prod: prod.amidostacks.com
@@ -94,7 +97,7 @@ variables:
   # tf_workspace_suffix: $[]
   scripts_dir: $(Agent.BuildDirectory)/s/stacks-pipeline-templates/azDevOps/azure/templates/v2/scripts
   # DEFAULT IMAGE RUNNER
-  pool_vm_image: ubuntu-18.04
+  pool_vm_image: ubuntu-20.04
   # Test setup
   # ADD Vars here
   # TestCafe E2E Tests
@@ -198,6 +201,7 @@ stages:
     condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/master'))
     variables:
       - group: amido-stacks-infra-credentials-nonprod
+      - group: stacks-credentials-nonprod-kv
       - group: amido-stacks-webapp
       - name: Environment.ShortName
         value: dev
@@ -224,19 +228,19 @@ stages:
                     #
                     terraform_output_artefact: 'tfoutputs'
                     # Terraform State Config
-                    terraform_backend_client_id: $(azure_client_id)
-                    terraform_backend_client_secret: $(azure_client_secret)
-                    terraform_backend_tenant_id: $(azure_tenant_id)
-                    terraform_backend_subscription_id: $(azure_subscription_id)
+                    terraform_backend_client_id: $(azure-client-id)
+                    terraform_backend_client_secret: $(azure-client-secret)
+                    terraform_backend_tenant_id: $(azure-tenant-id)
+                    terraform_backend_subscription_id: $(azure-subscription-id)
                     terraform_state_rg: $(tf_state_rg)
                     terraform_state_storage: $(tf_state_storage)
                     terraform_state_container: $(tf_state_container)
                     terraform_state_key: $(tf_state_key)
                     # Azure Config
-                    azure_client_id: $(azure_client_id)
-                    azure_client_secret: $(azure_client_secret)
-                    azure_tenant_id: $(azure_tenant_id)
-                    azure_subscription_id: $(azure_subscription_id)
+                    azure_client_id: $(azure-client-id)
+                    azure_client_secret: $(azure-client-secret)
+                    azure_tenant_id: $(azure-tenant-id)
+                    azure_subscription_id: $(azure-subscription-id)
                     # TODO: Why does this have component on the end?
                     terraform_state_workspace: $(Environment.ShortName)-$(component)
                     # Global Config
@@ -253,9 +257,9 @@ stages:
                       TF_VAR_resource_group_location: $(region),
                       TF_VAR_create_cdn_endpoint: false,
                       TF_VAR_create_dns_record: true,
-                      TF_VAR_app_gateway_frontend_ip_name: "amido-stacks-nonprod-eun-core",
-                      TF_VAR_app_insights_name: "amido-stacks-nonprod-eun-core",
-                      TF_VAR_core_resource_group: "amido-stacks-nonprod-eun-core",
+                      TF_VAR_app_gateway_frontend_ip_name: "amido-stacks-nonprod-euw-core",
+                      TF_VAR_app_insights_name: "amido-stacks-nonprod-euw-core",
+                      TF_VAR_core_resource_group: "amido-stacks-nonprod-euw-core",
                       TF_VAR_name_company: $(company),
                       TF_VAR_name_project: $(project),
                       TF_VAR_name_domain: $(domain),
@@ -265,7 +269,7 @@ stages:
                       # TODO: Should this be domain like everything else?
                       TF_VAR_dns_record: $(Environment.ShortName)-$(component),
                       TF_VAR_dns_zone_name: $(base_domain_nonprod),
-                      TF_VAR_dns_zone_resource_group: "amido-stacks-nonprod-eun-core",
+                      TF_VAR_dns_zone_resource_group: "$(dns_zone_resource_group)",
                       TF_VAR_internal_dns_zone_name: $(base_domain_internal_nonprod),
                       TF_VAR_account_replication_type: "LRS",
                       TF_VAR_account_kind: "StorageV2",
@@ -365,12 +369,12 @@ stages:
                         args: "-no-empty",
                       }
                     ]
-                    azure_client_id: "$(azure_client_id)"
-                    azure_client_secret: "$(azure_client_secret)"
-                    azure_tenant_id: "$(azure_tenant_id)"
-                    azure_subscription_id: "$(azure_subscription_id)"
-                    aks_cluster_resourcegroup: "amido-stacks-nonprod-eun-core"
-                    aks_cluster_name: "amido-stacks-nonprod-eun-core"
+                    azure_client_id: "$(azure-client-id)"
+                    azure_client_secret: "$(azure-client-secret)"
+                    azure_tenant_id: "$(azure-tenant-id)"
+                    azure_subscription_id: "$(azure-subscription-id)"
+                    aks_cluster_resourcegroup: "amido-stacks-nonprod-euw-core"
+                    aks_cluster_name: "amido-stacks-nonprod-euw-core"
                     # Used to do a `kubectl rollout status`
                     deployments: [
                       {
@@ -400,6 +404,7 @@ stages:
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
     variables:
       - group: amido-stacks-infra-credentials-prod
+      - group: stacks-credentials-nonprod-kv
       - group: amido-stacks-webapp
       - name: Environment.ShortName
         value: prod
@@ -426,19 +431,19 @@ stages:
                     #
                     terraform_output_artefact: 'tfoutputs'
                     # Terraform State Config
-                    terraform_backend_client_id: $(prod_azure_client_id)
-                    terraform_backend_client_secret: $(prod_azure_client_secret)
-                    terraform_backend_tenant_id: $(prod_azure_tenant_id)
-                    terraform_backend_subscription_id: $(prod_azure_subscription_id)
+                    terraform_backend_client_id: $(prod-azure-client-id)
+                    terraform_backend_client_secret: $(prod-azure-client-secret)
+                    terraform_backend_tenant_id: $(prod-azure-tenant-id)
+                    terraform_backend_subscription_id: $(prod-azure-subscription-id)
                     terraform_state_rg: $(tf_state_rg)
                     terraform_state_storage: $(tf_state_storage)
                     terraform_state_container: $(tf_state_container)
                     terraform_state_key: $(tf_state_key)
                     # Azure Config
-                    azure_client_id: $(prod_azure_client_id)
-                    azure_client_secret: $(prod_azure_client_secret)
-                    azure_tenant_id: $(prod_azure_tenant_id)
-                    azure_subscription_id: $(prod_azure_subscription_id)
+                    azure_client_id: $(prod-azure-client-id)
+                    azure_client_secret: $(prod-azure-client-secret)
+                    azure_tenant_id: $(prod-azure-tenant-id)
+                    azure_subscription_id: $(prod-azure-subscription-id)
                     # TODO: Why does this have component on the end?
                     terraform_state_workspace: $(Environment.ShortName)-$(component)
                     # Global Config
@@ -455,9 +460,9 @@ stages:
                       TF_VAR_resource_group_location: $(region),
                       TF_VAR_create_cdn_endpoint: false,
                       TF_VAR_create_dns_record: true,
-                      TF_VAR_app_gateway_frontend_ip_name: "amido-stacks-prod-eun-core",
-                      TF_VAR_app_insights_name: "amido-stacks-prod-eun-core",
-                      TF_VAR_core_resource_group: "amido-stacks-prod-eun-core",
+                      TF_VAR_app_gateway_frontend_ip_name: "amido-stacks-prod-euw-core",
+                      TF_VAR_app_insights_name: "amido-stacks-prod-euw-core",
+                      TF_VAR_core_resource_group: "amido-stacks-prod-euw-core",
                       TF_VAR_name_company: $(company),
                       TF_VAR_name_project: $(project),
                       TF_VAR_name_domain: $(domain),
@@ -467,7 +472,7 @@ stages:
                       # TODO: Should this be domain like everything else?
                       TF_VAR_dns_record: $(Environment.ShortName)-$(component),
                       TF_VAR_dns_zone_name: $(base_domain_prod),
-                      TF_VAR_dns_zone_resource_group: "amido-stacks-prod-eun-core",
+                      TF_VAR_dns_zone_resource_group: "$(dns_zone_resource_group)",
                       TF_VAR_internal_dns_zone_name: $(base_domain_internal_prod),
                       TF_VAR_account_replication_type: "LRS",
                       TF_VAR_account_kind: "StorageV2",
@@ -519,15 +524,15 @@ stages:
                     arguments: >
                       -a "$(docker_image_name):$(docker_image_tag)"
                       -b "$(k8s_docker_registry_nonprod)"
-                      -c "$(azure_subscription_id)"
-                      -d "$(azure_client_id)"
-                      -e "$(azure_client_secret)"
-                      -f "$(azure_tenant_id)"
+                      -c "$(azure-subscription-id)"
+                      -d "$(azure-client-id)"
+                      -e "$(azure-client-secret)"
+                      -f "$(azure-tenant-id)"
                       -g "$(k8s_docker_registry_prod)"
-                      -h "$(prod_azure_subscription_id)"
-                      -i "$(prod_azure_client_id)"
-                      -j "$(prod_azure_client_secret)"
-                      -k "$(prod_azure_tenant_id)"
+                      -h "$(prod-azure-subscription-id)"
+                      -i "$(prod-azure-client-id)"
+                      -j "$(prod-azure-client-secret)"
+                      -k "$(prod-azure-tenant-id)"
                       -Z "false"
                   displayName: Promote Docker Image to Production ACR
 
@@ -604,12 +609,12 @@ stages:
                         args: "-no-empty",
                       }
                     ]
-                    azure_client_id: "$(prod_azure_client_id)"
-                    azure_client_secret: "$(prod_azure_client_secret)"
-                    azure_tenant_id: "$(prod_azure_tenant_id)"
-                    azure_subscription_id: "$(prod_azure_subscription_id)"
-                    aks_cluster_resourcegroup: "amido-stacks-prod-eun-core"
-                    aks_cluster_name: "amido-stacks-prod-eun-core"
+                    azure_client_id: "$(prod-azure-client-id)"
+                    azure_client_secret: "$(prod-azure-client-secret)"
+                    azure_tenant_id: "$(prod-azure-tenant-id)"
+                    azure_subscription_id: "$(prod-azure-subscription-id)"
+                    aks_cluster_resourcegroup: "amido-stacks-prod-euw-core"
+                    aks_cluster_name: "amido-stacks-prod-euw-core"
                     # Used to do a `kubectl rollout status`
                     deployments: [
                       {
