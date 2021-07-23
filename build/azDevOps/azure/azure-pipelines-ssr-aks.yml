@@ -559,7 +559,7 @@ stages:
           - name: app_insights_instrumentation_key
             value: $[ dependencies.AppInfraProd.outputs['AppInfraProd.tfoutputs.app_insights_instrumentation_key'] ]
           - name: storage_account_name
-            value: $[ dependencies.AppInfraDev.outputs['AppInfraProd.tfoutputs.storage_account_name'] ]
+            value: $[ dependencies.AppInfraProd.outputs['AppInfraProd.tfoutputs.storage_account_name'] ]
           # TODO: Should this be domain like everything else?
           - name: namespace
             value: $(Environment.ShortName)-$(component)
