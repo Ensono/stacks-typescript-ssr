@@ -413,7 +413,7 @@ stages:
     # condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
     variables:
       - group: amido-stacks-infra-credentials-prod
-      - group: stacks-credentials-nonprod-kv
+      - group: stacks-credentials-prod-kv
       - group: amido-stacks-webapp
       - name: Environment.ShortName
         value: prod
