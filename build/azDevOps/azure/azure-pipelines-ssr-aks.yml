@@ -519,6 +519,8 @@ stages:
         variables:
           - group: amido-stacks-infra-credentials-nonprod
           - group: amido-stacks-infra-credentials-prod
+          - group: stacks-credentials-nonprod-kv
+          - group: stacks-credentials-prod-kv
         strategy:
           runOnce:
             deploy:
