@@ -567,6 +567,14 @@ stages:
             value: "$(Environment.ShortName)-$(component).$(base_domain_prod)"
           - name: api_full_url
             value: "https://$(Environment.ShortName)-netcore-api.$(base_domain_prod)/api/menu"
+          - name: azure_subscription_id
+            value: "$(azure-subscription-id)"
+          - name: azure_tenant_id
+            value: "$(azure-tenant-id)"
+          - name: azure_client_id
+            value: "$(azure-client-id)"
+          - name: azure_client_secret
+            value: "$(azure-client-secret)"
         pool:
           vmImage: $(pool_vm_image)
         environment: ${{ variables.domain }}-prod
