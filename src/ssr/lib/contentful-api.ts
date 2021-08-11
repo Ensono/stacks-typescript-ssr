@@ -1,9 +1,12 @@
 import {createClient} from "contentful"
+import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
+import ReactDOMServer from 'react-dom/server';
+import React from 'react';
 
 const client = createClient({
     space: process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID,
     accessToken: process.env.NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN,
-})
+});
 
 function parseAuthor({fields}) {
     return {
@@ -17,7 +20,7 @@ function parsePost({fields, sys}) {
         title: fields.title,
         slug: fields.slug,
         date: fields.date,
-        content: fields.content,
+        content: ReactDOMServer.renderToString(React.createElement(React.Fragment, {}, documentToReactComponents(fields.content))),
         excerpt: fields.excerpt,
         coverImage: fields.coverImage.fields.file,
         author: parseAuthor(fields.author),

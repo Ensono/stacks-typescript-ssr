@@ -5,6 +5,7 @@ node_modules/
 .next/
 coverage/
 .vscode/
+.idea/
 test-report.xml
 
 # GENERATED OUTPUT
