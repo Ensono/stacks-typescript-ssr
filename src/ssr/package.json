@@ -55,7 +55,7 @@
     "express": "^4.17.1",
     "express-session": "^1.17.1",
     "helmet": "^4.6.0",
-    "ioredis": "^4.19.4",
+    "ioredis": "^4.27.8",
     "isomorphic-unfetch": "^3.0.0",
     "morgan": "^1.9.1",
     "next": "^9.5",
