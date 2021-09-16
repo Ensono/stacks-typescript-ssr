@@ -10,7 +10,7 @@ ENV APP_BASE_PATH=${APP_BASE_PATH}
 ENV NEXT_PUBLIC_CONTENTFUL_SPACE_ID=${NEXT_PUBLIC_CONTENTFUL_SPACE_ID} 
 ENV NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN=${NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN}
 
-RUN apt-get update -y && apt-get install dumb-init -y
+RUN apt-get update --allow-releaseinfochange -y && apt-get install dumb-init -y
 # use changes to package.json to force Docker not to use the cache
 # when we change our application's nodejs dependencies:
 COPY package*.json /tmp/
