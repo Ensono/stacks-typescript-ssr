@@ -79,7 +79,7 @@ variables:
     value: $[counter(join(variables['version_major'], join('-', variables['version_minor'])), 0)]
   - name: version_build_number
     value: "$(version_major).$(version_minor).$(version_revision)-$(Build.SourceBranchName)"
-  
+
   # Docker Config
   - name: docker_dockerfile_path
     value: "src/"
