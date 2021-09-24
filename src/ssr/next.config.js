@@ -42,4 +42,5 @@ module.exports = {
         ...publicConf,
         EXAMPLE_VAR_FOR_FE: "define_me",
     },
+    poweredByHeader: false,
 }
