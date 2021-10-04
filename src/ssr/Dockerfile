@@ -1,4 +1,4 @@
-FROM amidostacks/node:0.0.3
+FROM amidostacks/node-14:0.0.2
 
 ARG NODE_ENV=production
 ARG APP_BASE_PATH=""
