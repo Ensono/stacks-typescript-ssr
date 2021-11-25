@@ -43,75 +43,85 @@ resources:
       image: amidostacks/lhci:0.0.2
 
 variables:
-  company: amido
-  project: stacks
-  domain: node
-  role: frontend
-  component: ssr-ui
+  - template: azuredevops-vars.yml
+
+  - name: component
+    value: ssr-ui
+
+  - name: role
+    value: frontend
   #
   # SelfConfig
   # If you haven't specified source_repo at cli runtime please ensure you replace it here
   # It is case sensitive for TFS based repos
-  self_repo: stacks-typescript-ssr
-  self_repo_src: src/ssr
-  self_repo_dir: "$(Agent.BuildDirectory)/s/$(self_repo)"
-  self_project_dir: "$(self_repo_dir)/$(self_repo_src)"
-  self_repo_tf_src: deploy/azure/app/kube
-  self_repo_tf_dir: "$(self_repo_dir)/$(self_repo_tf_src)"
-  self_pipeline_repo: "$(Agent.BuildDirectory)/s/stacks-pipeline-templates"
-  self_pipeline_scripts_dir: "$(self_pipeline_repo)/scripts"
-  # TF STATE CONFIG
-  tf_state_rg: "Stacks-Ancillary-Resources"
-  tf_state_storage: "amidostackstfstate"
-  tf_state_container: "tfstate"
-  # Stacks operates Terraform states based on workspaces **IT IS VERY IMPORTANT** that you ensure a unique name for each application definition
-  # Furthermore **IT IS VERY IMPORTANT** that you change the name of a workspace for each deployment stage
-  # there are some best practices around this if you are going for feature based environments
-  # - we suggest you create a runtime variable that is dynamically set based on a branch currently running
-  # **`terraform_state_workspace: `**
-  # avoid running anything past dev that is not on master
-  tf_state_key: "stacks-webapp-ssr"
+  - name: self_repo_src
+    value: src/ssr
+  - name: self_repo_dir
+    value: "$(Agent.BuildDirectory)/s/$(self_repo)"
+  - name: self_project_dir
+    value: "$(self_repo_dir)/$(self_repo_src)"
+  - name: self_repo_tf_src
+    value: deploy/azure/app/kube
+  - name: self_repo_tf_dir
+    value: "$(self_repo_dir)/$(self_repo_tf_src)"
+
+  - name: self_pipeline_repo
+    value: "$(Agent.BuildDirectory)/s/stacks-pipeline-templates"
+  - name: self_pipeline_scripts_dir
+    value: "$(self_pipeline_repo)/scripts"
+
   # Versioning
-  version_major: 0
-  version_minor: 0
-  version_revision: $[counter(join(variables['version_major'], join('-', variables['version_minor'])), 0)]
-  version_build_number: "$(version_major).$(version_minor).$(version_revision)-$(Build.SourceBranchName)"
+  - name: version_major
+    value: 0
+  - name: version_minor
+    value: 0
+  - name: version_revision
+    value: $[counter(join(variables['version_major'], join('-', variables['version_minor'])), 0)]
+  - name: version_build_number
+    value: "$(version_major).$(version_minor).$(version_revision)-$(Build.SourceBranchName)"
+
   # Docker Config
-  docker_dockerfile_path: "src/"
-  docker_image_name: $(component)
-  docker_image_tag: "$(version_major).$(version_minor).$(version_revision)-$(build.sourcebranchname)"
-  docker_container_registry_name_nonprod: amidostacksnonprodeuwcore
-  k8s_docker_registry_nonprod: $(docker_container_registry_name_nonprod).azurecr.io
-  docker_container_registry_name_prod: amidostacksprodeuwcore
-  k8s_docker_registry_prod: $(docker_container_registry_name_prod).azurecr.io
-  # Environment
-  # Set the name of the resource group that has the DNS zones to be updated
-  dns_zone_resource_group: "Stacks-Ancillary-Resources"
-  # AKS/AZURE
-  region: "westeurope"
-  base_domain_nonprod: nonprod.amidostacks.com
-  base_domain_internal_nonprod: nonprod.amidostacks.internal
-  base_domain_prod: prod.amidostacks.com
-  base_domain_internal_prod: prod.amidostacks.internal
+  - name: docker_dockerfile_path
+    value: "src/"
+  - name: docker_image_name
+    value: $(component)
+  - name: docker_image_tag
+    value: "$(version_major).$(version_minor).$(version_revision)-$(build.sourcebranchname)"
+
+  - name: k8s_docker_registry_nonprod
+    value: $(docker_container_registry_name_nonprod).azurecr.io
+  - name: k8s_docker_registry_prod
+    value: $(docker_container_registry_name_prod).azurecr.io
+
   # Dynamic vars for downstream purposes
   # tf_workspace_suffix: $[]
-  scripts_dir: $(Agent.BuildDirectory)/s/stacks-pipeline-templates/azDevOps/azure/templates/v2/scripts
+  - name: scripts_dir
+    value: $(Agent.BuildDirectory)/s/stacks-pipeline-templates/azDevOps/azure/templates/v2/scripts
   # DEFAULT IMAGE RUNNER
-  pool_vm_image: ubuntu-20.04
+  - name: pool_vm_image
+    value: ubuntu-20.04
   # Test setup
   # ADD Vars here
   # TestCafe E2E Tests
-  testcafe_e2e_test: true
-  testcafe_working_directory: "${{ variables.self_repo_dir }}/test/testcafe"
+  - name: testcafe_e2e_test
+    value: true
+  - name: testcafe_working_directory
+    value: "${{ variables.self_repo_dir }}/test/testcafe"
   # Resource Test Results Blob Storage Container
-  test_results_container: "testresults"
+  - name: test_results_container
+    value: "testresults"
   # Lighthouse Audit
-  lighthouse_audit: true
-  lighthouse_config_path: '${{ variables.self_repo_dir }}/test/lighthouse-ci'
-  lighthouse_config_filename: lighthouserc.json
+  - name: lighthouse_audit
+    value: true
+  - name: lighthouse_config_path
+    value: '${{ variables.self_repo_dir }}/test/lighthouse-ci'
+  - name: lighthouse_config_filename
+    value: lighthouserc.json
   # Yamllint
-  yamllint_config_file: "${{ variables.self_repo_dir }}/yamllint.conf"
-  yamllint_scan_directory: "."
+  - name: yamllint_config_file
+    value: "${{ variables.self_repo_dir }}/yamllint.conf"
+  - name: yamllint_scan_directory
+    value: "."
 
 stages:
   - stage: Build
@@ -266,9 +276,9 @@ stages:
                       TF_VAR_resource_group_location: $(region),
                       TF_VAR_create_cdn_endpoint: false,
                       TF_VAR_create_dns_record: true,
-                      TF_VAR_app_gateway_frontend_ip_name: "amido-stacks-nonprod-euw-core",
-                      TF_VAR_app_insights_name: "amido-stacks-nonprod-euw-core",
-                      TF_VAR_core_resource_group: "amido-stacks-nonprod-euw-core",
+                      TF_VAR_app_gateway_frontend_ip_name: $(tf_app_gateway_frontend_ip_name_nonprod),
+                      TF_VAR_app_insights_name: $(tf_app_insights_name_nonprod),
+                      TF_VAR_core_resource_group: $(tf_core_resource_group_nonprod),
                       TF_VAR_name_company: $(company),
                       TF_VAR_name_project: $(project),
                       TF_VAR_name_domain: $(domain),
@@ -382,8 +392,8 @@ stages:
                     azure_client_secret: "$(azure-client-secret)"
                     azure_tenant_id: "$(azure-tenant-id)"
                     azure_subscription_id: "$(azure-subscription-id)"
-                    aks_cluster_resourcegroup: "amido-stacks-nonprod-euw-core"
-                    aks_cluster_name: "amido-stacks-nonprod-euw-core"
+                    aks_cluster_resourcegroup: "$(kubernetes_clusterrg_nonprod)"
+                    aks_cluster_name: "$(kubernetes_clustername_nonprod)"
                     # Used to do a `kubectl rollout status`
                     deployments: [
                       {
@@ -469,9 +479,9 @@ stages:
                       TF_VAR_resource_group_location: $(region),
                       TF_VAR_create_cdn_endpoint: false,
                       TF_VAR_create_dns_record: true,
-                      TF_VAR_app_gateway_frontend_ip_name: "amido-stacks-prod-euw-core",
-                      TF_VAR_app_insights_name: "amido-stacks-prod-euw-core",
-                      TF_VAR_core_resource_group: "amido-stacks-prod-euw-core",
+                      TF_VAR_app_gateway_frontend_ip_name: $(tf_app_gateway_frontend_ip_name_prod),
+                      TF_VAR_app_insights_name: $(tf_app_insights_name_prod),
+                      TF_VAR_core_resource_group: $(tf_core_resource_group_prod),
                       TF_VAR_name_company: $(company),
                       TF_VAR_name_project: $(project),
                       TF_VAR_name_domain: $(domain),
@@ -632,8 +642,8 @@ stages:
                     azure_client_secret: "$(prod-azure-client-secret)"
                     azure_tenant_id: "$(prod-azure-tenant-id)"
                     azure_subscription_id: "$(prod-azure-subscription-id)"
-                    aks_cluster_resourcegroup: "amido-stacks-prod-euw-core"
-                    aks_cluster_name: "amido-stacks-prod-euw-core"
+                    aks_cluster_resourcegroup: $(kubernetes_clusterrg_prod)
+                    aks_cluster_name: $(kubernetes_clustername_prod)
                     # Used to do a `kubectl rollout status`
                     deployments: [
                       {

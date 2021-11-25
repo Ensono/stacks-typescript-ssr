@@ -26,7 +26,6 @@ const isRedisEnabled =
     conf.REDIS_ENABLED && !process.env.CI && authenticationEnabled
 const app = next({dev: process.env.NODE_ENV !== "production", dir: "."})
 const handle = app.getRequestHandler()
-app.renderOpts.poweredByHeader = false
 
 const ssrCache = cacheableResponse({
     ttl: 1000 * 60 * 60, // 1hour
