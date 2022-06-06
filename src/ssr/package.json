@@ -47,7 +47,7 @@
     "cacheable-response": "^2.1.8",
     "caniuse-lite": "^1.0.0",
     "connect-redis": "^4.0.4",
-    "contentful": "^8.0.3",
+    "contentful": "^9.1.32",
     "cookie": "^0.4.1",
     "cors": "^2.8.5",
     "cross-env": "^6.0.3",
