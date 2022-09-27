@@ -1,26 +1,26 @@
 version: 2
 updates: []
-  # TODO: Re-enable and evaluate when SSR is refactored.
-  # - package-ecosystem: npm
-  #   directory: "/src/ssr"
-  #   schedule:
-  #     interval: daily
-  #     timezone: Europe/London
-  #   open-pull-requests-limit: 10
-  #   rebase-strategy: disabled
+# TODO: Re-enable and evaluate when SSR is refactored.
+# - package-ecosystem: npm
+#   directory: "/src/ssr"
+#   schedule:
+#     interval: daily
+#     timezone: Europe/London
+#   open-pull-requests-limit: 10
+#   rebase-strategy: disabled
 
-  # - package-ecosystem: npm
-  #   directory: "/test/testcafe"
-  #   schedule:
-  #     interval: daily
-  #     timezone: Europe/London
-  #   open-pull-requests-limit: 10
-  #   rebase-strategy: disabled
+# - package-ecosystem: npm
+#   directory: "/test/testcafe"
+#   schedule:
+#     interval: daily
+#     timezone: Europe/London
+#   open-pull-requests-limit: 10
+#   rebase-strategy: disabled
 
-  # - package-ecosystem: terraform
-  #   directory: "/deploy/azure/app/kube"
-  #   schedule:
-  #     interval: daily
-  #     timezone: Europe/London
-  #   open-pull-requests-limit: 10
-  #   rebase-strategy: disabled
+# - package-ecosystem: terraform
+#   directory: "/deploy/azure/app/kube"
+#   schedule:
+#     interval: daily
+#     timezone: Europe/London
+#   open-pull-requests-limit: 10
+#   rebase-strategy: disabled
